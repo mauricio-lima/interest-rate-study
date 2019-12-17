@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 
 
 typedef int (runner_t)(float, float, float, float, int*);
@@ -29,6 +30,13 @@ int loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao,
   *iterations = months;
 
   return (months + 1);
+}
+
+
+int algebric(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao, int* iterations)
+{
+  *iterations = 0;
+  return round(log(salaryCarlos/salaryJoao)/log(rateJoao/rateCarlos));
 }
 
 
@@ -62,7 +70,8 @@ int main(void)
   printf("Qual o salário de Carlos? ");
   scanf("%f", &salaryCarlos);
 
-  runner(loop, "loop", 300, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
+  runner(loop,     "loop",     3000, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
+  runner(algebric, "algebric", 3000, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
 
   return 0;
 }
