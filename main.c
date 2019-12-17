@@ -40,7 +40,9 @@ int algebric(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJ
 }
 
 
-float equation(float x, float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
+float inline equation(float, float, float, float, float)  __attribute__((always_inline));
+
+float inline equation(float x, float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
 {
   return (salaryCarlos/salaryJoao) * pow(rateCarlos/rateJoao, x);
 }
@@ -92,17 +94,18 @@ void runner(runner_t* function, char* name, int count, float salaryCarlos, float
   clock_t finish;
   int     result;
   int     iterations;
-
-
+  double  time_taken;
+  
   start = clock();
   for(int i = 0; i < count; i++)
   {
     result = (*function)(salaryCarlos, salaryJoao, rateCarlos, rateJoao, &iterations);
   }
   finish = clock();
+  time_taken = (double)(finish - start) / CLOCKS_PER_SEC * 1000 * 1000 * 1000 / count;
 
   printf("\nSaldo atingido em %d meses usando '%s'\n", result, name);
-  printf("O cálculo foi feito com %d iterações em %2.1lf microsegundos medidos em %d execuções\n\n", iterations, (double)(finish - start) / CLOCKS_PER_SEC * 1000 * 1000 * 1000 / count, count);
+  printf("O cálculo foi feito com %d iterações em %2.1lf nanosegundos medidos em %d execuções\n\n", iterations, time_taken, count);
 }
 
 
@@ -116,9 +119,10 @@ int main(void)
   printf("Qual o salário de Carlos? ");
   scanf("%f", &salaryCarlos);
 
-  runner(loop,     "loop",     3000, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
-  runner(algebric, "algebric", 3000, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
-  runner(dicotomy, "dicotomy", 3000, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
+  int profile_count = 5000;
+  runner(loop,     "loop",     profile_count, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
+  runner(algebric, "algebric", profile_count, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
+  runner(dicotomy, "dicotomy", profile_count, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
 
   return 0;
 }
