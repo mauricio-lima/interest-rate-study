@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-void loop(float salaryCarlos, float rateCarlos, float rateJoao)
+void loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
 {
   float balanceCarlos;
   float balanceJoao;
@@ -11,7 +11,7 @@ void loop(float salaryCarlos, float rateCarlos, float rateJoao)
 
   months = 0;
   balanceCarlos = salaryCarlos;
-  balanceJoao   = salaryCarlos / 3;
+  balanceJoao   = salaryJoao;
   while (1)
   {
     balanceCarlos *= rateCarlos;
@@ -33,10 +33,11 @@ int main(void)
   float rateJoao   = 1.05;
   float salaryCarlos;
 
+
   printf("Qual o salário de Carlos? ");
   scanf("%f", &salaryCarlos);
 
-  loop(salaryCarlos, rateCarlos, rateJoao);
+  loop(salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
 
   return 0;
 }
