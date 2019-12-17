@@ -4,7 +4,7 @@
 #include <time.h>
 
 
-int loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
+int loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao, int* iterations)
 {
   float balanceCarlos;
   float balanceJoao;
@@ -23,6 +23,7 @@ int loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
 
     months++;
   }
+  *iterations = months;
 
   return (months + 1);
 }
@@ -33,17 +34,18 @@ void runner(char* name, int count, float salaryCarlos, float salaryJoao, float r
   clock_t start;
   clock_t finish;
   int     result;
+  int     iterations;
 
 
   start = clock();
   for(int i = 0; i < count; i++)
   {
-    result = loop(salaryCarlos, salaryJoao, rateCarlos, rateJoao);
+    result = loop(salaryCarlos, salaryJoao, rateCarlos, rateJoao, &iterations);
   }
   finish = clock();
 
   printf("\nSaldo atingido em %d meses usando '%s'\n", result, name);
-  printf("O cálculo foi feito em %2.1lf microsegundos medidos em %d execuções\n\n", (double)(finish - start) / CLOCKS_PER_SEC * 1000 * 1000 * 1000 / count, count);
+  printf("O cálculo foi feito com %d iterações em %2.1lf microsegundos medidos em %d execuções\n\n", iterations, (double)(finish - start) / CLOCKS_PER_SEC * 1000 * 1000 * 1000 / count, count);
 }
 
 
