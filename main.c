@@ -4,6 +4,9 @@
 #include <time.h>
 
 
+typedef int (runner_t)(float, float, float, float, int*);
+
+
 int loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao, int* iterations)
 {
   float balanceCarlos;
@@ -29,7 +32,7 @@ int loop(float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao,
 }
 
 
-void runner(char* name, int count, float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
+void runner(runner_t* function, char* name, int count, float salaryCarlos, float salaryJoao, float rateCarlos, float rateJoao)
 {
   clock_t start;
   clock_t finish;
@@ -40,7 +43,7 @@ void runner(char* name, int count, float salaryCarlos, float salaryJoao, float r
   start = clock();
   for(int i = 0; i < count; i++)
   {
-    result = loop(salaryCarlos, salaryJoao, rateCarlos, rateJoao, &iterations);
+    result = (*function)(salaryCarlos, salaryJoao, rateCarlos, rateJoao, &iterations);
   }
   finish = clock();
 
@@ -59,7 +62,7 @@ int main(void)
   printf("Qual o salário de Carlos? ");
   scanf("%f", &salaryCarlos);
 
-  runner("loop", 300, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
+  runner(loop, "loop", 300, salaryCarlos, salaryCarlos / 3, rateCarlos, rateJoao);
 
   return 0;
 }
